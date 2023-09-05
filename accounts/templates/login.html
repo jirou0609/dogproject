@@ -29,7 +29,7 @@
       }
     </style>
 
-    {% block contents %}
+    {% block header %}
     <link href={% static "css/signin.css" %}
           rel="stylesheet">
   </head>
@@ -41,9 +41,9 @@
       <form method="post">
         {% csrf_token %}
         <img class="mb-4"
-             src={% static "assets/business_kaitataku.png" %}
-             alt="" width="272"
-             height="257">
+            src={% static "assets/business_kaitataku.png" %}
+            alt="" width="272"
+            height="257">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <label for="Username" class="visually-hidden">
