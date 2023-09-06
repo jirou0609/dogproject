@@ -29,5 +29,60 @@
                 </div>
             </header>
             {% endblock %}
+
+            {% block contents %}
+            <form method='POST' enctype='multipart/form-data'>
+                {% csrf_token %}
+                <label for="{{ form.answer_1.id_for_label }}">質問1:元気ですか？ {{ form.question_1.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="button" name="answer_1" value="1">とても</button>
+                                                <button type="button" name="answer_1" value="2">まぁまぁ</button>
+                                                <button type="button" name="answer_1" value="3">悪い</button>
+                                            </div>
+                                            <br><br><br>
+                                            <label for="{{ form.answer_2.id_for_label }}">質問2:何が食べたいですか？ {{ form.question_2.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="button" name="answer_2" value="1">オムライス</button>
+                                                <button type="button" name="answer_2" value="2">ラーメン</button>
+                                                <button type="button" name="answer_2" value="3">お子様ランチ</button>
+                                            </div>
+                                            <br><br><br>
+                                            <label for="{{ form.answer_3.id_for_label }}">質問3:どこに行きたいですか？国の名前は？ {{ form.question_3.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="button" name="answer_3" value="1">アメリカ</button>
+                                                <button type="button" name="answer_3" value="2">日本のままがいい</button>
+                                                <button type="button" name="answer_3" value="3">スリランカ民主社会主義共和国</button>
+                                            </div>
+                                            <br><br><br>
+                                            <label for="{{ form.answer_4.id_for_label }}">質問4:早口言葉ならああああああああああああ {{ form.question_4.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="button" name="answer_4" value="1">坊主が上手にびょうぶに坊主の絵をかいた</button>
+                                                <button type="button" name="answer_4" value="2">赤巻紙青巻紙黄巻紙</button>
+                                                <button type="button" name="answer_4" value="3">マサチューセッツ州</button>
+                                            </div>
+                                            <br><br><br>
+                                            <label for="{{ form.answer_5.id_for_label }}">質問5: {{ form.question_5.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="submit" name="answer_5" value="1">1</button>
+                                                <button type="submit" name="answer_5" value="2">2</button>
+                                                <button type="submit" name="answer_5" value="3">3</button>
+                                            </div>
+                                            <br><br><br>
+                                            <label for="{{ form.answer_6.id_for_label }}">質問6: {{ form.question_6.label }}</label>
+                                            <br>
+                                            <div>
+                                                <button type="submit" name="answer_6" value="1">1</button>
+                                                <button type="submit" name="answer_6" value="2">2</button>
+                                                <button type="submit" name="answer_6" value="3">3</button>
+                                            </div>
+                                            <br><br><br><br>
+                                            <button type="submit">送信</button>
+                                        </form>
+            {% endblock %}
     </body>
 </html>
