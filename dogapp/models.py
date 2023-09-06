@@ -10,3 +10,21 @@ class Dogs(models.Model):
     def __str__(self):
         return self.dog_name
 
+class UserAnswer(models.Model):
+    answer_1 = models.IntegerField(verbose_name='回答1',)
+    answer_2 = models.IntegerField(verbose_name='回答2',)
+    answer_3 = models.IntegerField(verbose_name='回答3',)
+    answer_4 = models.IntegerField(verbose_name='回答4',)
+    answer_5 = models.IntegerField(verbose_name='回答5',)
+    answer_6 = models.IntegerField(verbose_name='回答6',)
+    user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
+
+
+class Choice(models.Model):
+    question_1 = models.IntegerField(verbose_name='質問1',)
+    question_2 = models.IntegerField(verbose_name='質問2',)
+    question_3 = models.IntegerField(verbose_name='質問3',)
+    question_4 = models.IntegerField(verbose_name='質問4',)
+    question_5 = models.IntegerField(verbose_name='質問5',)
+    question_6 = models.IntegerField(verbose_name='質問6',)
+    dog_name = models.ForeignKey(Dogs, verbose_name='犬名', on_delete=models.CASCADE)
