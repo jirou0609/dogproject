@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+            <!-- Header-->
+            {% block header %}
+            <header class="bg-dark py-5">
+                <div class="container px-5">
+                    <div class="row gx-5 align-items-center justify-content-center">
+                        <div class="col-lg-8 col-xl-7 col-xxl-6">
+                            <div class="my-5 text-center text-xl-start">
+                                <h1 class="display-5 fw-bolder text-white mb-2">犬種診断</h1>
+                                <p class="lead fw-normal text-white-50 mb-4">質問に答えるとぴったりの犬種がわかる！？</p>
+                                {% if user.is_authenticated %}
+                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">診断する</a>
+                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:logout' %}">ログアウト</a>
+                                </div>
+                                {% else %}
+                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">ログイン</a>
+                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:signup' %}">サインアップ</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
+                    </div>
+                </div>
+            </header>
+            {% endblock %}
+
+            {% block contents %}
+            <body>
+                <form name="form" action="{% url 'dogapp:question3' %}" method="post">
+                    {% csrf_token %}
+                    <h2>質問333333333333333333</h2>
+                    <button type="submit" name="answer" value="1">回答１</button>
+                    <button type="submit" name="answer" value="2">回答２</button>
+                    <button type="submit" name="answer" value="3">回答３</button>
+                </form>
+            </body>
+            {% endblock %}
+    </body>
+</html>
