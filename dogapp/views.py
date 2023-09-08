@@ -71,6 +71,7 @@ class CreateAnswerView(CreateView):
     form_class = UserAnswerForm
     template_name = 'choiceform.html'
 
+
     def form_valid(self, form):
         # フォームから回答を取得
         list_a = [
