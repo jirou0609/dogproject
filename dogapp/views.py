@@ -51,10 +51,24 @@ def find_most_similar_id_with_order(target_list, Choice):
 # else:
 #     print("一致するデータベース内のIDが見つかりませんでした。")
 
+def create_answer_list_from_session(request):
+    list_a = []
+
+    for i in range(1, 7):
+        session_key = f'answer{i}'
+        if session_key in request.session:
+            answer = request.session[session_key]
+            print(f"セッションキー: {session_key}, セッション値: {answer}")
+            list_a.append(answer)
+            print(f"６まで終わったリスト{list_a}")
+
+    return list_a
+
 def question1(request):
     if request.method == 'POST':
         answer1 = request.POST.get('answer')
         request.session['answer1'] = answer1
+        list_a = create_answer_list_from_session(request)
         return render(request, 'question2.html')
     return render(request, 'question1.html')
 
@@ -62,6 +76,7 @@ def question2(request):
     if request.method == 'POST':
         answer2 = request.POST.get('answer')
         request.session['answer2'] = answer2
+        list_a = create_answer_list_from_session(request)
         return render(request, 'question3.html')
     return render(request, 'question2.html')
 
@@ -69,6 +84,7 @@ def question3(request):
     if request.method == 'POST':
         answer3 = request.POST.get('answer')
         request.session['answer3'] = answer3
+        list_a = create_answer_list_from_session(request)
         return render(request, 'question4.html')
     return render(request, 'question3.html')
 
@@ -76,6 +92,7 @@ def question4(request):
     if request.method == 'POST':
         answer4 = request.POST.get('answer')
         request.session['answer4'] = answer4
+        list_a = create_answer_list_from_session(request)
         return render(request, 'question5.html')
     return render(request, 'question5.html')
 
@@ -83,6 +100,7 @@ def question5(request):
     if request.method == 'POST':
         answer5 = request.POST.get('answer')
         request.session['answer5'] = answer5
+        list_a = create_answer_list_from_session(request)
         return render(request, 'question6.html')
     return render(request, 'question5.html')
 
@@ -90,44 +108,35 @@ def question6(request):
     if request.method == 'POST':
         answer6 = request.POST.get('answer')
         request.session['answer6'] = answer6
-        return redirect('create_answer')
+        list_a = create_answer_list_from_session(request)
+        print(f"さいご終わったリスト{list_a}")
+        return redirect('dogapp:create_answer')
     return render(request, 'question6.html')
 
-@method_decorator(login_required, name='dispatch')
-class CreateAnswerView(CreateView):
-    form_class = UserAnswerForm
-    template_name = 'choiceform.html'
 
 
-    def form_valid(self, form):
-        answer_1 = self.request.session.get('answer1')
-        answer_2 = self.request.session.get('answer2')
-        answer_3 = self.request.session.get('answer3')
-        answer_4 = self.request.session.get('answer4')
-        answer_5 = self.request.session.get('answer5')
-        answer_6 = self.request.session.get('answer6')
+@login_required
+def create_answer(request):
+    # if request.method == 'POST':
+        list_a = create_answer_list_from_session(request)
+        print(f"defのリストは{list_a}")
+        list_a = [int(x) for x in list_a]
 
-        form_answer_1 = form.cleaned_data['answer_1']
-        form_answer_2 = form.cleaned_data['answer_2']
-        form_answer_3 = form.cleaned_data['answer_3']
-        form_answer_4 = form.cleaned_data['answer_4']
-        form_answer_5 = form.cleaned_data['answer_5']
-        form_answer_6 = form.cleaned_data['answer_6']
-
-        # データベースからDogChoiceオブジェクトを取得
         dog_choices_from_db = Choice.objects.all()
-
-        # 類似性を計算して最も類似したIDを見つける
-        # most_similar_id = find_most_similar_id_with_order(list_a, dog_choices_from_db)
-        most_similar_id = find_most_similar_id_with_order(
-            [answer_1, answer_2, answer_3, answer_4, answer_5, answer_6],
-            dog_choices_from_db
-        )
-
+        most_similar_id = find_most_similar_id_with_order(list_a, dog_choices_from_db)
         if most_similar_id is not None:
-            print("フォームデータと最も一致率が高いデータベース内のID（順序考慮）:", most_similar_id)
+            print("セッションデータと最も一致率が高いデータベース内のID（順序考慮）:", most_similar_id)
 
-            self.most_similar_id = most_similar_id
+            user_answer = UserAnswer(
+                answer_1=list_a[0],
+                answer_2=list_a[1],
+                answer_3=list_a[2],
+                answer_4=list_a[3],
+                answer_5=list_a[4],
+                answer_6=list_a[5],
+                user=request.user
+            )
+            user_answer.save()
 
             # リダイレクト先のURLを指定
             success_url = reverse('dogapp:dog_detail', kwargs={'dog_id': most_similar_id})
@@ -137,23 +146,10 @@ class CreateAnswerView(CreateView):
 
         else:
             print("一致するデータベース内のIDが見つかりませんでした。")
+            print(f"{most_similar_id}{find_most_similar_id_with_order}")
+            return render(request, 'index.html')
 
-        # 回答データを保存
-        # postdata = form.save(commit=False)
-        # postdata.user = self.request.user
-        # postdata.save()
-
-        user_answer = UserAnswer(
-            answer_1=answer_1,
-            answer_2=answer_2,
-            answer_3=answer_3,
-            answer_4=answer_4,
-            answer_5=answer_5,
-            answer_6=answer_6,
-            user=self.request.user
-        )
-
-        return super().form_valid(form)
+    # return render(request, 'index.html')
 
 
 from django.shortcuts import render, get_object_or_404
