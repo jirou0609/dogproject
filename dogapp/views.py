@@ -1,18 +1,19 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 
-from .forms import UserAnswerForm
-from .models import Choice, UserAnswer
+from .models import Choice, UserAnswer, Dogs
 
 app_name = 'dogapp'
 
-class IndexView(TemplateView):
+class IndexView(ListView):
     template_name = 'index.html'
+    model = Dogs
 
 def calculate_similarity_with_order(list1, list2):
     total_elements = len(list1)
@@ -41,15 +42,6 @@ def find_most_similar_id_with_order(target_list, Choice):
 
     return most_similar_id
 
-# データベースからリストを取得
-# list_a = [1, 3, 2, 3, 1, 2]
-# dog_choices_from_db = Choice.objects.all()
-
-# most_similar_id = find_most_similar_id_with_order(list_a, dog_choices_from_db)
-# if most_similar_id is not None:
-#     print("リストAと最も一致率が高いデータベース内のID（順序考慮）:", most_similar_id)
-# else:
-#     print("一致するデータベース内のIDが見つかりませんでした。")
 
 def create_answer_list_from_session(request):
     list_a = []
@@ -64,6 +56,7 @@ def create_answer_list_from_session(request):
 
     return list_a
 
+
 def question1(request):
     if request.method == 'POST':
         answer1 = request.POST.get('answer')
@@ -71,6 +64,7 @@ def question1(request):
         list_a = create_answer_list_from_session(request)
         return render(request, 'question2.html')
     return render(request, 'question1.html')
+
 
 def question2(request):
     if request.method == 'POST':
@@ -80,6 +74,7 @@ def question2(request):
         return render(request, 'question3.html')
     return render(request, 'question2.html')
 
+
 def question3(request):
     if request.method == 'POST':
         answer3 = request.POST.get('answer')
@@ -87,6 +82,7 @@ def question3(request):
         list_a = create_answer_list_from_session(request)
         return render(request, 'question4.html')
     return render(request, 'question3.html')
+
 
 def question4(request):
     if request.method == 'POST':
@@ -96,6 +92,7 @@ def question4(request):
         return render(request, 'question5.html')
     return render(request, 'question5.html')
 
+
 def question5(request):
     if request.method == 'POST':
         answer5 = request.POST.get('answer')
@@ -103,6 +100,7 @@ def question5(request):
         list_a = create_answer_list_from_session(request)
         return render(request, 'question6.html')
     return render(request, 'question5.html')
+
 
 def question6(request):
     if request.method == 'POST':
@@ -112,7 +110,6 @@ def question6(request):
         print(f"さいご終わったリスト{list_a}")
         return redirect('dogapp:create_answer')
     return render(request, 'question6.html')
-
 
 
 @login_required
@@ -149,13 +146,12 @@ def create_answer(request):
             print(f"{most_similar_id}{find_most_similar_id_with_order}")
             return render(request, 'index.html')
 
-    # return render(request, 'index.html')
-
-
-from django.shortcuts import render, get_object_or_404
-from .models import Dogs
 
 def dog_detail(request, dog_id):
-    # 指定されたIDに対応するDogsモデルのインスタンスを取得
     dog = get_object_or_404(Dogs, pk=dog_id)
     return render(request, 'dog_detail.html', {'dog': dog})
+
+class DogsView(ListView):
+    template_name = 'dog_list.html'
+    model = Dogs
+    paginate_by = 9

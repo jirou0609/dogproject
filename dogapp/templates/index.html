@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
             <!-- Header-->
             {% block header %}
-            <header class="bg-warning py-5">
+            <header class="bg-warning py-0">
                 <div class="container px-5">
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-8 col-xl-7 col-xxl-6">
@@ -12,12 +10,12 @@
                                 <h1 class="display-5 fw-bolder text-black mb-2">犬種診断アプリ</h1>
                                 <p class="lead fw-normal text-black-50 mb-4">あなたにぴったりのパートナー見つけませんか？</p>
                                 {% if user.is_authenticated %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                <div class="d-grid gap-3 d-sm-flex justify-content-center">
                                     <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">診断する</a>
                                     <a class="btn btn-outline-dark btn-lg px-4" href="{% url 'accounts:logout' %}">ログアウト</a>
                                 </div>
                                 {% else %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                <div class="d-grid gap-3 d-sm-flex justify-content-center">
                                     <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">ログイン</a>
                                     <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:signup' %}">サインアップ</a>
                                 </div>
@@ -29,5 +27,20 @@
                 </div>
             </header>
             {% endblock %}
+            {% block body %}
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class="text-center">
+                                <h2 class="fw-bolder">～犬種紹介～</h2>
+                                <p class="lead fw-normal text-muted mb-5">横にスクロールさせると他の犬種も見ることができます</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gx-5">
+                        {% include 'dog_list_Scroll.html' %}
+                    </div>
+                    {% endblock %}
     </body>
 </html>

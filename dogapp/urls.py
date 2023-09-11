@@ -6,6 +6,7 @@ app_name = 'dogapp'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('dog_list/', views.DogsView.as_view(), name='dog_list'),
     path('dogs/<int:dog_id>/', views.dog_detail, name='dog_detail'),
     path('question1/', views.question1, name='question1'),
     path('question2/', views.question2, name='question2'),

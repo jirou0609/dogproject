@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <style>
+    /* 新しいスタイルを追加 */
+    .scrollable-container {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    /* 画像をアスペクト比を保持して表示 */
+    .card-image {
+      width: 100%;
+      padding-top: 75%; /* 画像のアスペクト比を保持するためのパディング */
+      background-size: cover; /* 画像をコンテナに合わせて表示 */
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid scrollable-container">
+    <div class="row flex-nowrap">
+
+      <!-- 新しいforループのコードを挿入 -->
+      {% for record in object_list %}
+        <div class="col-3">
+          <div class="card shadow-sm">
+            <div class="card-image" style="background-image: url('{{ record.image.url }}');"></div>
+            <div class="card-body">
+              <p class="card-text">{{record.dog_name}}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button"
+                          class="btn btn-sm btn-outline-secondary" onclick="location.href='#'">
+                          詳細</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <!-- 新しいforループのコードここまで -->
+
+    </div>
+  </div>
+</body>
+</html>
