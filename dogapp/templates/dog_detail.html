@@ -1,46 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-            <!-- Header-->
-            {% block header %}
-            <header class="bg-dark py-5">
-                <div class="container px-5">
-                    <div class="row gx-5 align-items-center justify-content-center">
-                        <div class="col-lg-8 col-xl-7 col-xxl-6">
-                            <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">犬種診断アプリ</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">あなたにぴったりのパートナー見つけませんか？</p>
-                                {% if user.is_authenticated %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">診断する</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:logout' %}">ログアウト</a>
-                                </div>
-                                {% else %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">ログイン</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:signup' %}">サインアップ</a>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
-                    </div>
-                </div>
-            </header>
-            {% endblock %}
-            {% block contents %}
+    {% block contents %}
+    <style>
+        .large-text {
+          font-size: 24px; /* テキストの文字サイズ */
+          text-align: center; /* テキスト中央揃え */
+          display: inline-block; /* inline-block 要素に変更します */
+          margin: 0 20px; /* 左右のマージン */
+        }
+    </style>
+    <br><br><br>
+        <body>
+            <div class="text-center">
+                <h2>あなたにオススメの犬種は</h2>
+            </div>
+        </body>
             <br>
             <div class="container">
-            <div class="row">
-            <div class="col offset-2">
-                <p><img src="{{ dog.image.url}}"></img></p>
-                <h1>{{dog.dog_name}}</h1>
-                <h3>{{dog.comment}}</h3>
-            <br>
-        </div>
-    </div>
-</div>
-            {% endblock %}
-    </body>
-</html>
+                <div class="row">
+                    <div class="col offset-0 text-center">
+                        <!-- 画像を中央に配置し、中くらいのサイズにする -->
+                        <img src="{{ dog.image.url }}" class="img-fluid rounded-3 my-5 mx-auto" style="max-width: 50%;" alt="...">
+                        <h1>{{ dog.dog_name }}</h1><br><br><br>
+                        <h3 class="text-center" style="max-width: 700px; margin: 0 auto;">{{ dog.comment }}</h3>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+                <div class="text-center">
+                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text=あなたにオススメの犬種は･･･ 【{{ dog.dog_name }}】<<犬種診断アプリ>>であなたにぴったりのパートナー見つけませんか？
+                            &via=YourTwitterHandle" target="_blank" rel="noopener noreferrer" class="large-text">𝕏 結果をポストする</a>
+                <a href="{% url 'dogapp:index' %}" class="large-text">TOPに戻る</a>
+                </div>
+    {% endblock %}
+
