@@ -1,45 +1,78 @@
-{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-            <!-- Header-->
-            {% block header %}
-            <header class="bg-dark py-5">
-                <div class="container px-5">
-                    <div class="row gx-5 align-items-center justify-content-center">
-                        <div class="col-lg-8 col-xl-7 col-xxl-6">
-                            <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">犬種診断</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">質問に答えるとぴったりの犬種がわかる！？</p>
-                                {% if user.is_authenticated %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">診断する</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:logout' %}">ログアウト</a>
-                                </div>
-                                {% else %}
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'accounts:login' %}">ログイン</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="{% url 'accounts:signup' %}">サインアップ</a>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
-                    </div>
-                </div>
-            </header>
-            {% endblock %}
+<title>{% block title %}question4{% endblock %}</title>
+<link href={% static 'css/styles.css' %} rel="stylesheet" />
+    <head>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container px-5">
+                <a class="navbar-brand" href="{% url 'dogapp:index' %}">DOG CHOICE</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            </div>
+        </nav>
+    </head>
+<style>
+    .background-container {
+        background-image: url('{% static "img/background-image1.jpg" %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        /* 他の背景スタイルを設定することもできます */
+    }
 
-            {% block contents %}
-            <body>
-                <form name="form" action="{% url 'dogapp:question4' %}" method="post">
-                    {% csrf_token %}
-                    <h2>質問4</h2>
-                    <button type="submit" name="answer" value="1">回答１</button>
-                    <button type="submit" name="answer" value="2">回答２</button>
-                    <button type="submit" name="answer" value="3">回答３</button>
-                </form>
-            </body>
-            {% endblock %}
-    </body>
-</html>
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.7); /* 背景色の透明度を設定 (0.6 は 60% の透明度) */
+        padding: 20px;
+    }
+
+    /* ボタンの横幅を広げるスタイル */
+    .btn-wide {
+        width: 40%;
+    }
+
+</style>
+
+<div class="background-container">
+    <div class="form-container">
+        <div class="text-center">
+            <form name="form" action="{% url 'dogapp:question4' %}" method="post">
+                {% csrf_token %}
+                <h1>質問4</h1>
+                <br><br>
+
+                <h3>あああああああああああああああああああああああああああああああ</h3>
+                <br><br><br><br>
+                <div class="row">
+                    <div class="col-md">
+                        <button type="submit" class="btn btn-outline-danger btn-wide" name="answer" value="1">回答１</button>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md">
+                        <button type="submit" class="btn btn-outline-primary btn-wide" name="answer" value="2">回答２</button>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md">
+                        <button type="submit" class="btn btn-outline-success btn-wide" name="answer" value="3">回答３</button>
+                    </div>
+                </div><br>
+            </form>
+            <!-- 余白を設定 -->
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark py-4 mt-auto">
+    <div class="container px-5">
+        <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+            <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+            <div class="col-auto">
+                <a class="link-light small" href="https://twitter.com/">𝕏</a>
+                <span class="text-white mx-1">&middot;</span>
+                <a class="link-light small" href="https://www.facebook.com/">facebook</a>
+                <span class="text-white mx-1">&middot;</span>
+                <a class="link-light small" href="https://about.instagram.com/ja-jp">instagram</a>
+            </div>
+        </div>
+    </div>
+</footer>
