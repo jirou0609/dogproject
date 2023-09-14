@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>整数カウント結果</title>
+</head>
+<body>
+    <h1>整数カウント結果</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>整数</th>
+                <th>カウント</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result_count in result_counts %}
+            <tr>
+                <td>{{ result_count.result }}</td>
+                <td>{{ result_count.count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<h1>上位3つの整数カウントランキング</h1>
+<table>
+    <thead>
+        <tr>
+            <th>順位</th>
+            <th>整数</th>
+            <th>カウント</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result_count in result_counts %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ result_count.result }}</td>
+            <td>{{ result_count.count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>

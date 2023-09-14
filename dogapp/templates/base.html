@@ -27,12 +27,14 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:index' %}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:question1' %}">診断</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:ranking' %}">ランキング</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:dog_list' %}">犬種一覧</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">ログアウト</a></li>
                         </ul>
                         {% else %}
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:index' %}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:ranking' %}">ランキング</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'dogapp:dog_list' %}">犬種一覧</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">ログイン</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}">サインアップ</a></li>

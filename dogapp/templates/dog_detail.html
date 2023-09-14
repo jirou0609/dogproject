@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+<title>{% block title %}detail{% endblock %}</title>
     {% block contents %}
     <style>
         .large-text {
@@ -10,29 +11,18 @@
         }
     </style>
     <br><br><br>
-        <body>
-            <div class="text-center">
-                <h2>あなたにオススメの犬種は</h2>
-            </div>
-        </body>
             <br>
             <div class="container">
                 <div class="row">
                     <div class="col offset-0 text-center">
                         <!-- 画像を中央に配置し、中くらいのサイズにする -->
-                        <img src="{{ dog.image.url }}" class="img-fluid rounded-3 my-5 mx-auto" style="max-width: 50%;" alt="...">
-                        <h1>{{ dog.dog_name }}</h1><br><br><br>
-                        <h3 class="text-center" style="max-width: 700px; margin: 0 auto;">{{ dog.comment }}</h3>
+                        <img src="{{ object.image.url }}" class="img-fluid rounded-3 my-5 mx-auto" style="max-width: 50%;" alt="...">
+                        <h1>{{ object.dog_name }}</h1><br><br><br>
+                        <h3 class="text-center" style="max-width: 700px; margin: 0 auto;">{{ object.comment }}</h3>
                     </div>
                 </div>
             </div>
             <br><br><br>
-            <div>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-                <div class="text-center">
-                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text=あなたにオススメの犬種は･･･ 【{{ dog.dog_name }}】<<犬種診断アプリ>>であなたにぴったりのパートナー見つけませんか？
-                            &via=YourTwitterHandle" target="_blank" rel="noopener noreferrer" class="large-text">𝕏 結果をポストする</a>
-                <a href="{% url 'dogapp:index' %}" class="large-text">TOPに戻る</a>
-                </div>
+        </div>
     {% endblock %}
 

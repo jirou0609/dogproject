@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Count
 
-from .models import Choice, UserAnswer, Dogs
+from .models import Choice, UserAnswer, Dogs, Result
+
 
 app_name = 'dogapp'
 
@@ -52,7 +54,7 @@ def create_answer_list_from_session(request):
             answer = request.session[session_key]
             print(f"セッションキー: {session_key}, セッション値: {answer}")
             list_a.append(answer)
-            print(f"６まで終わったリスト{list_a}")
+            print(f"格納されたリスト{list_a}")
 
     return list_a
 
@@ -124,6 +126,9 @@ def create_answer(request):
         if most_similar_id is not None:
             print("セッションデータと最も一致率が高いデータベース内のID（順序考慮）:", most_similar_id)
 
+            result = Result(result=most_similar_id, user=request.user)
+            result.save()
+
             user_answer = UserAnswer(
                 answer_1=list_a[0],
                 answer_2=list_a[1],
@@ -135,10 +140,8 @@ def create_answer(request):
             )
             user_answer.save()
 
-            # リダイレクト先のURLを指定
-            success_url = reverse('dogapp:dog_detail', kwargs={'dog_id': most_similar_id})
+            success_url = reverse('dogapp:result', kwargs={'dog_id': most_similar_id})
 
-            # リダイレクトを行う
             return HttpResponseRedirect(success_url)
 
         else:
@@ -147,11 +150,28 @@ def create_answer(request):
             return render(request, 'index.html')
 
 
-def dog_detail(request, dog_id):
+def result(request, dog_id):
     dog = get_object_or_404(Dogs, pk=dog_id)
-    return render(request, 'dog_detail.html', {'dog': dog})
+    return render(request, 'result.html', {'dog': dog})
+
 
 class DogsView(ListView):
     template_name = 'dog_list.html'
     model = Dogs
     paginate_by = 9
+
+
+def count_results(request):
+    result_counts = Result.objects.values('result').annotate(count=Count('result')).order_by('-count')[:3]
+
+    # カウント結果を表示するためのコードを追加する
+    for item in result_counts:
+        print(f'整数 {item["result"]} のカウント: {item["count"]}')
+
+    # ビューを返す場合
+    return render(request, 'ranking.html', {'result_counts': result_counts})
+
+
+class DetailView(DetailView):
+    template_name = 'dog_detail.html'
+    model = Dogs

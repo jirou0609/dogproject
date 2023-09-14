@@ -28,3 +28,8 @@ class Choice(models.Model):
     question_5 = models.IntegerField(verbose_name='質問5',)
     question_6 = models.IntegerField(verbose_name='質問6',)
     dog_name = models.ForeignKey(Dogs, verbose_name='犬名', on_delete=models.CASCADE)
+
+
+class Result(models.Model):
+    result = models.IntegerField(verbose_name='リザルト',)
+    user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
