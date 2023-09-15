@@ -10864,3 +10864,25 @@ html {
   background-color: #e0e0e0;
   transform: translateY(50%) rotateX(30deg); /* 3D変形 */
 }
+
+/* 全体のスタイル */
+.ranking {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+}
+
+.child {
+  float: left;
+}
+
+.child {
+  color: #fff;
+  text-align: center;
+  line-height: 100px;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}

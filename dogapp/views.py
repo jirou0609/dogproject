@@ -175,3 +175,27 @@ def count_results(request):
 class DetailView(DetailView):
     template_name = 'dog_detail.html'
     model = Dogs
+
+
+# ランキングを表示するために上位3件に並び替え&リストに格納して返す
+def count_results(request):
+    result_counts = Result.objects.values('result').annotate(count=Count('result')).order_by('-count')[:3]
+
+    dog_info_list = []
+
+    for item in result_counts:
+        result_value = item['result']
+        dog_record = Dogs.objects.filter(id=result_value).first()
+
+        if dog_record:
+            dog_info_list.append({
+                'dog_name': dog_record.dog_name,
+                'dog_image_url': dog_record.image.url if dog_record.image else None  # 画像がない場合はNoneを設定
+            })
+        else:
+            dog_info_list.append({
+                'dog_name': '未登録',
+                'dog_image_url': '画像なし'
+            })
+
+    return render(request, 'ranking.html', {'dog_info_list': dog_info_list})

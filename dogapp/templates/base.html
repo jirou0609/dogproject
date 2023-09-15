@@ -53,28 +53,36 @@
             <section class="py-5" id="features">
                 <div class="container px-5 my-5">
                     <div class="row gx-5">
-                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">Choice Menu</h2></div>
                         <div class="col-lg-8">
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
                                 <div class="col mb-5 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    {% if user.is_authenticated %}
+                                        <a class="nav-link" href="{% url 'dogapp:question1' %}">
+                                    {% else %}
+                                        <a class="nav-link" href="{% url 'accounts:login' %}">
+                                    {% endif %}
+                                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-suit-heart-fill"></i></div>
+                                        <h2 class="h5" style="font-weight: bold;">診断</h2>
+                                        <p class="mb-0">いくつかの質問に答えてあなたと相性の良い犬種をお知らせします。診断にはログインが必要です。</p></a>
                                 </div>
                                 <div class="col mb-5 h-100">
+                                    <a class="nav-link" href="{% url 'dogapp:dog_list' %}">
                                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <h2 class="h5" style="font-weight: bold;">犬種紹介</h2>
+                                    <p class="mb-0">小型犬から大型犬、有名な犬からレアな犬まで多種多様な犬種を紹介します。</p></a>
                                 </div>
                                 <div class="col mb-5 mb-md-0 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <a class="nav-link" href="{% url 'dogapp:ranking' %}">
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi bi-trophy"></i></div>
+                                    <h2 class="h5" style="font-weight: bold;">ランキング</h2>
+                                    <p class="mb-0">みんなが診断した結果を集計してTOP3を紹介。最も選ばれた犬は･･･？</p></a>
                                 </div>
                                 <div class="col h-100">
+                                    <a class="nav-link" href="#">
                                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <h2 class="h5" style="font-weight: bold;">みんなのレビュー（未）</h2>
+                                    <p class="mb-0">レビューページが出来上がったらリンク予定</p></a>
                                 </div>
                             </div>
                         </div>
@@ -84,9 +92,11 @@
             <!-- Testimonial section-->
             <!-- Blog preview section-->
             {% block body %}{% endblock %}
+
         <!-- Footer-->
+        <br><br>
         <footer class="bg-dark py-4 mt-auto">
-            <div class="container px-5">
+            <div class="container px-8">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
                     <div class="col-auto">
