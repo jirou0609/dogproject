@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dogs, UserAnswer, Choice, Result
+from .models import Dogs, UserAnswer, Choice, Result, Comment
 
 
 class DogsAdmin(admin.ModelAdmin):
@@ -24,3 +24,9 @@ class ResultAdmin(admin.ModelAdmin):
     list_display = ('id', 'result', 'user')
     list_display_links = ('id', 'result', 'user')
 admin.site.register(Result, ResultAdmin)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'category', 'user')
+    list_display_links = ('id', 'category', 'user')
+admin.site.register(Comment, CommentAdmin)

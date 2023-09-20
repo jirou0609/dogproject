@@ -33,3 +33,14 @@ class Choice(models.Model):
 class Result(models.Model):
     result = models.IntegerField(verbose_name='リザルト',)
     user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
+
+
+# コメントモデル
+class Comment(models.Model):
+    category = models.ForeignKey(Dogs, on_delete=models.CASCADE, verbose_name='犬名', related_name='comments')
+    user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
+    comment_text = models.TextField(verbose_name='コメント')
+    post_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.user.username} on {self.post_date}'
