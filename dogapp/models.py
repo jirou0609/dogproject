@@ -37,7 +37,7 @@ class Result(models.Model):
 
 # コメントモデル
 class Comment(models.Model):
-    category = models.ForeignKey(Dogs, on_delete=models.CASCADE, verbose_name='犬名', related_name='comments')
+    category = models.ForeignKey(Dogs, on_delete=models.CASCADE, verbose_name='犬名', related_name='comments', null=True, blank=True)
     user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
     comment_text = models.TextField(verbose_name='コメント')
     post_date = models.DateTimeField(auto_now_add=True)

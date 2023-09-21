@@ -18,4 +18,5 @@ urlpatterns = [
     path('question5/', views.question5, name='question5'),
     path('question6/', views.question6, name='question6'),
     path('create_answer/', views.create_answer, name='create_answer'),
+    path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
 ]

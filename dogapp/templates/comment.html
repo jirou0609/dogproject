@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<!-- Header -->
-{% block header %}
+  <!-- Header -->
+  {% block header %}
   <header class="bg-warning py-0">
     <div class="container px-5">
       <div class="row gx-5 align-items-center justify-content-center">
@@ -14,55 +14,67 @@
       </div>
     </div>
   </header>
-{% endblock %}
+  {% endblock %}
 
-{% block contents %}
-<div class="container mt-5">
-  <div class="row justify-content-center"> <!-- コンテンツを中央に配置 -->
-    <div class="col-lg-8">
-      <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメント</h3>
-      <hr style="border: 4px solid red;">
+  {% block contents %}
+  <div class="container mt-5">
+    <div class="row justify-content-center"> <!-- コンテンツを中央に配置 -->
+      <div class="col-lg-8">
+
+            <!-- コメント投稿フォーム -->
+            <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメントを投稿する</h3>
+            <hr>
+              <form method="post" class="mb-4">
+                {% csrf_token %}
+                  <div class="mb-3">
+                    {{ form.category.label_tag }}
+                    {{ form.category }}<span class="small-text">　特定の犬種があれば選択してください</span>
+                  </div>
+                <div class="mb-3">
+                  {{ form.comment_text.label_tag }}
+                  <textarea name="comment_text" rows="3" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">投稿</button>
+                  </div>
+                </div>
+              </form>
 
       <!-- コメント一覧 -->
-      <div class="comment-list">
-        {% for comment in comments %}
-        <div class="comment-box">
-          <div class="comment-header">
-            <span class="comment-id">NO: {{ comment.id }}</span>
-            <a href="{% url 'dogapp:dog_detail' comment.category_id %}">{{ comment.category }}</a>
-            <span class="comment-user">{{ comment.user }}</span>
-            <span class="comment-date">{{ comment.post_date }}</span>
-          </div>
-          <div class="comment-text">
-            <p class="comment-text-large">{{ comment.comment_text }}</p>
-            <hr>
+      <hr style="border: 4px solid orange;">
+        <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメント</h3>
+          <div class="comment-list">
+          {% for comment in comments %}
+            <div class="comment-box">
+              <div class="comment-header">
+                <span class="comment-id">NO: {{ comment.id }}</span>
+                {% if comment.category %}
+                <a href="{% url 'dogapp:dog_detail' comment.category_id %}">{{ comment.category }}</a>
+                {% else %}
+                その他
+                {% endif %}
+                <span class="comment-user">{{ comment.user }}</span>
+                <span class="comment-date">{{ comment.post_date }}</span>
+              </div>
+                <div class="comment-text">
+                  <p class="comment-text-large">{{ comment.comment_text }}</p>
+                  {% if request.user == comment.user %}
+                    <form method='POST'>
+                      <div class="d-flex justify-content-end">
+                        <a href="{% url 'dogapp:comment_delete' comment.pk %}" class="btn btn-primary my-2">削除する</a>
+                      </div>
+                    </form>
+                  {% endif %}
+                  <hr>
+                </div>
+              </div>
+              {% empty %}
+              <p>まだコメントはありません。</p>
+              {% endfor %}
+            </div>
           </div>
         </div>
-        {% empty %}
-        <p>まだコメントはありません。</p>
-        {% endfor %}
       </div>
-
-      <!-- コメント投稿フォーム -->
-      <hr style="border: 4px solid red;">
-      <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメントを投稿する</h3>
-      <hr>
-      <form method="post" class="mb-4">
-        {% csrf_token %}
-        <div class="mb-3">
-          {{ form.category.label_tag }}
-          {{ form.category }}
-        </div>
-        <div class="mb-3">
-          {{ form.comment_text.label_tag }}
-          <textarea name="comment_text" rows="3" class="form-control"></textarea>
-        </div>
-        <div class="mb-3">
-          <button type="submit" class="btn btn-primary">投稿</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-{% include 'pagination.html' %}
-{% endblock %}
+    <hr style="border: 4px solid orange;">
+  {% endblock %}

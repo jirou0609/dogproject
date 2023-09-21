@@ -10848,3 +10848,10 @@ html {
 }
 
 /* ここから追記部分 */
+.small-text {
+  font-size: 12px; /* フォントサイズを調整 */
+  color: gray; /* テキストの色を指定（灰色にする場合） */
+}.small-text {
+  font-size: 12px; /* フォントサイズを調整 */
+  color: gray; /* テキストの色を指定（灰色にする場合） */
+}

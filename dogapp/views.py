@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -202,27 +202,6 @@ def count_results(request):
     return render(request, 'ranking.html', {'dog_info_list': dog_info_list})
 
 
-# @method_decorator(login_required, name='dispatch')
-# class CommentView(CreateView):
-#     form_class = CommentForm
-#     template_name = 'comment.html'
-#     success_url = reverse_lazy('dogapp:comment')
-
-#     def form_valid(self, form):
-#         postdata = form.save(commit=False)
-#         postdata.user = self.request.user
-#         postdata.post_date = timezone.now()  # 現在の日時を設定
-#         postdata.save()
-#         return super().form_valid(form)
-
-# class ThreadView(ListView):
-#     template_name = 'comment.html'
-#     context_object_name = 'comments'
-#     queryset = Comment.objects.order_by('-post_date')
-#     paginate_by = 9
-
-
-
 class CommentListView(TemplateView):
     template_name = 'comment.html'
     form_class = CommentForm
@@ -245,3 +224,12 @@ class CommentListView(TemplateView):
             context = self.get_context_data()
             context['form'] = form
             return self.render_to_response(context)
+
+
+class CommentDeleteView(DeleteView):
+    template_name = 'comment_delete.html'
+    model = Comment
+    success_url = reverse_lazy('dogapp:comment')
+
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)

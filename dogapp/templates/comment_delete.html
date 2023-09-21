@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}comment delete{% endblock %}
+
+  {% block contents %}
+  <br>
+  <div class="container">
+    <div class="row">
+        <form method='POST'>
+        <br>
+          <h3 class="text-center">投稿したコメントを削除します。よろしいですか？</h3><br>
+          {% csrf_token %}
+          <div class="text-center">
+            <button class='btn btn-primary my-2' type='submit'>削除</button>
+            <a href="{% url 'dogapp:comment' %}" class="btn btn-primary my-2">キャンセル</a>
+          </div>
+          <br>
+          <hr>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

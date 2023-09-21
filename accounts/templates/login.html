@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 <!doctype html>
 <html lang="ja">
@@ -41,7 +42,7 @@
       <form method="post">
         {% csrf_token %}
         <img class="mb-4"
-            src={% static "assets/business_kaitataku.png" %}
+            src={% static "img/login.png" %}
             alt="" width="272"
             height="257">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
