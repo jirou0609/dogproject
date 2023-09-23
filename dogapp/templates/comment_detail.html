@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}comment detail{% endblock %}
+    {% block contents %}
+    <style>
+        .large-text {
+          font-size: 24px; /* テキストの文字サイズ */
+          text-align: center; /* テキスト中央揃え */
+          display: inline-block; /* inline-block 要素に変更します */
+          margin: 0 20px; /* 左右のマージン */
+        }
+    </style>
+    <br><br><br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col offset-0 text-center">
+
+                    komenntobubunn
+                    <hr style="border: 4px solid orange;">
+        <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメント</h3>
+          <div class="comment-list">
+          {% for comment in comments %}
+            <div class="comment-box">
+              <div class="comment-header">
+                <span class="comment-id">NO: {{ comment.id }}</span>
+                {% if comment.category %}
+                <a href="{% url 'dogapp:dog_detail' comment.category_id %}">{{ comment.category }}</a>
+                {% else %}
+                その他
+                {% endif %}
+                <span class="comment-user">{{ comment.user }}</span>
+                <span class="comment-date">{{ comment.post_date }}</span>
+              </div>
+                <div class="comment-text">
+                  <p class="comment-text-large">{{ comment.comment_text }}</p>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+        </div>
+        <hr style="border: 4px solid orange;">
+    {% endblock %}
+

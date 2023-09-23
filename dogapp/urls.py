@@ -8,7 +8,6 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('dog_list/', views.DogsView.as_view(), name='dog_list'),
     path('dog_detail/<int:pk>/', views.DetailView.as_view(), name='dog_detail'),
-    path('comment/', views.CommentListView.as_view(), name='comment'),
     path('ranking/', views.count_results, name='ranking'),
     path('dogs/<int:dog_id>/', views.result, name='result'),
     path('question1/', views.question1, name='question1'),
@@ -18,5 +17,7 @@ urlpatterns = [
     path('question5/', views.question5, name='question5'),
     path('question6/', views.question6, name='question6'),
     path('create_answer/', views.create_answer, name='create_answer'),
+    path('comment/', views.CommentListView.as_view(), name='comment'),
     path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
+    path('comment_detail/<int:comment_id>/', views.CommentDetailView.as_view(), name='comment_detail'),
 ]

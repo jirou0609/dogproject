@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, TemplateView, DeleteView
+from django.views.generic import ListView, DetailView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -18,12 +18,16 @@ class IndexView(ListView):
     template_name = 'index.html'
     model = Dogs
 
+
+#list1とlist2を照合して一致率を出す計算式
 def calculate_similarity_with_order(list1, list2):
     total_elements = len(list1)
     matching_elements = sum(1 for x, y in zip(list1, list2) if x == y)
     similarity = matching_elements / total_elements
     return similarity
 
+
+#最も類似したIDを返す
 def find_most_similar_id_with_order(target_list, Choice):
     most_similar_id = None
     max_similarity = 0
@@ -46,6 +50,7 @@ def find_most_similar_id_with_order(target_list, Choice):
     return most_similar_id
 
 
+#空のlist_aを作成してセッションから取り出して格納
 def create_answer_list_from_session(request):
     list_a = []
 
@@ -55,11 +60,12 @@ def create_answer_list_from_session(request):
             answer = request.session[session_key]
             print(f"セッションキー: {session_key}, セッション値: {answer}")
             list_a.append(answer)
-            print(f"格納されたリスト{list_a}")
+            print(f"ここまでのリスト{list_a}")
 
     return list_a
 
 
+#質問1～6
 def question1(request):
     if request.method == 'POST':
         answer1 = request.POST.get('answer')
@@ -110,16 +116,16 @@ def question6(request):
         answer6 = request.POST.get('answer')
         request.session['answer6'] = answer6
         list_a = create_answer_list_from_session(request)
-        print(f"さいご終わったリスト{list_a}")
         return redirect('dogapp:create_answer')
     return render(request, 'question6.html')
 
 
+#質問1～6の回答をUserAnswerへ格納、Choiceと照合して一致率の一番高いIDを返す
 @login_required
 def create_answer(request):
     # if request.method == 'POST':
         list_a = create_answer_list_from_session(request)
-        print(f"defのリストは{list_a}")
+        print(f"格納済みリスト{list_a}")
         list_a = [int(x) for x in list_a]
 
         dog_choices_from_db = Choice.objects.all()
@@ -156,23 +162,14 @@ def result(request, dog_id):
     return render(request, 'result.html', {'dog': dog})
 
 
+#犬種一覧ページ
 class DogsView(ListView):
     template_name = 'dog_list.html'
     model = Dogs
     paginate_by = 9
 
 
-def count_results(request):
-    result_counts = Result.objects.values('result').annotate(count=Count('result')).order_by('-count')[:3]
-
-    # カウント結果を表示するためのコードを追加する
-    for item in result_counts:
-        print(f'整数 {item["result"]} のカウント: {item["count"]}')
-
-    # ビューを返す場合
-    return render(request, 'ranking.html', {'result_counts': result_counts})
-
-
+#犬種詳細ページ
 class DetailView(DetailView):
     template_name = 'dog_detail.html'
     model = Dogs
@@ -191,7 +188,7 @@ def count_results(request):
         if dog_record:
             dog_info_list.append({
                 'dog_name': dog_record.dog_name,
-                'dog_image_url': dog_record.image.url if dog_record.image else None  # 画像がない場合はNoneを設定
+                'dog_image_url': dog_record.image.url if dog_record.image else None
             })
         else:
             dog_info_list.append({
@@ -202,13 +199,27 @@ def count_results(request):
     return render(request, 'ranking.html', {'dog_info_list': dog_info_list})
 
 
-class CommentListView(TemplateView):
+#コメントを消す
+class CommentDeleteView(DeleteView):
+    template_name = 'comment_delete.html'
+    model = Comment
+    success_url = reverse_lazy('dogapp:comment')
+
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+
+#フォームから入力を受け取って保存/コメントの一覧表示
+class CommentListView(ListView):
+    model = Comment
     template_name = 'comment.html'
+    context_object_name = 'comments'
+    ordering = ['-post_date']
     form_class = CommentForm
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = Comment.objects.order_by('-post_date')
         context['form'] = self.form_class()
         return context
 
@@ -226,10 +237,7 @@ class CommentListView(TemplateView):
             return self.render_to_response(context)
 
 
-class CommentDeleteView(DeleteView):
-    template_name = 'comment_delete.html'
+#コメント詳細ページ
+class CommentDetailView(DetailView):
+    template_name = 'comment_detail.html'
     model = Comment
-    success_url = reverse_lazy('dogapp:comment')
-
-    def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
