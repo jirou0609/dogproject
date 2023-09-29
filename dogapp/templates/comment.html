@@ -17,6 +17,51 @@
 {% endblock %}
 
 {% block contents %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleButtons = document.querySelectorAll(".toggle-reply-form");
+        var cancelButtons = document.querySelectorAll(".cancel-reply-form");
+
+        toggleButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var replyFormContainer = this.parentElement;
+                var replyForm = replyFormContainer.querySelector(".reply-form");
+                var originalToggleButton = replyFormContainer.querySelector(".toggle-reply-form");
+
+                if (replyForm.style.display === "none" || replyForm.style.display === "") {
+                    replyForm.style.display = "block";
+                    originalToggleButton.style.display = "none";
+                } else {
+                    replyForm.style.display = "none";
+                    originalToggleButton.style.display = "block";
+                }
+            });
+        });
+
+        cancelButtons.forEach(function(cancelButton) {
+            cancelButton.addEventListener("click", function() {
+                var replyFormContainer = this.parentElement;
+                var replyForm = replyFormContainer.querySelector(".reply-form");
+                var originalToggleButton = replyFormContainer.querySelector(".toggle-reply-form");
+
+                replyForm.style.display = "none";
+                originalToggleButton.style.display = "block";
+            });
+        });
+    });
+</script>
+<style>
+    .reply-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .toggle-reply-form,
+    .close-reply-form {
+        margin-right: 20px; /* ボタン間の右側のマージンを調整 */
+    }
+</style>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <!-- コンテンツを中央に配置 -->
@@ -59,7 +104,7 @@
                     </div>
                     <div class="comment-text">
                         <p class="comment-text-large">
-                          {{ comment.comment_text }}
+                        {{ comment.comment_text }}
                         </p>
                         {% if request.user == comment.user %}
                         <form method='POST'>
@@ -67,6 +112,23 @@
                                 <a href="{% url 'dogapp:comment_delete' comment.pk %}" class="btn btn-primary my-2">削除する</a>
                             </div>
                         </form>
+                        {% else %}
+                        <div class="reply-form-container">
+                            <button class="btn btn-primary my-2 toggle-reply-form">返信</button>
+                            <form method='POST' action="{% url 'dogapp:reply' %}" class="reply-form" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
+                                <div class="mb-3">
+                                    <textarea name="comment_text" rows="3" class="form-control"></textarea>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn btn-primary my-2">送信</button>
+                                        <button class="btn btn-danger my-2 cancel-reply-form" style="margin-left: 10px;">キャンセル</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         {% endif %}
                         <hr>
                     </div>

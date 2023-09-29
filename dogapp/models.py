@@ -44,3 +44,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post_date}'
+
+
+class ReplyComment(models.Model):
+    parent_comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='replies')
+    user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
+    comment_text = models.TextField(verbose_name='コメント')
+    post_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Reply by {self.user.username} on {self.post_date}'
