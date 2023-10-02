@@ -98,6 +98,7 @@
             <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメント</h3>
             <div class="comment-list">
                 {% for comment in comments %}
+                <hr style="border-top: 4px solid #000;">
                 <div class="comment-box">
                     <div class="comment-header">
                         <span class="comment-id">NO: {{ comment.id }}</span>
@@ -137,7 +138,6 @@
                             </form>
                         </div>
                         {% endif %}
-                        <hr style="border-top: 4px solid #000;">
                         <!-- 返信コメント -->
                         {% for reply in reply_comments %}
                         {% if reply.parent_comment == comment %}
@@ -151,8 +151,32 @@
                                     {{ reply.comment_text }}
                                 </p>
                             </div>
+                        {% if request.user == reply.user %}
+                            <form method='POST'>
+                                <div class="d-flex justify-content-end">
+                                    <a href="{% url 'dogapp:reply_delete' reply.pk %}" class="btn btn-danger my-2">削除する</a>
+                                </div>
+                            </form>
+                            {% else %}
+                            <div class="reply-form-container">
+                                <button class="btn btn-primary my-2 toggle-reply-form">返信</button>
+                                <form method='POST' action="{% url 'dogapp:reply' %}" class="reply-form" style="display: none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
+                                    <div class="mb-3">
+                                        <textarea name="comment_text" rows="3" class="form-control"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="d-flex">
+                                            <button type="submit" class="btn btn-primary my-2">送信</button>
+                                            <button class="btn btn-danger my-2 cancel-reply-form" style="margin-left: 10px;">キャンセル</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
                         </div>
-                        <br><hr>
+                        <br>
                         {% endif %}
                         {% endfor %}
                     </div>

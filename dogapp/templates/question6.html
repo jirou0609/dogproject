@@ -14,15 +14,13 @@
         background-image: url('{% static "img/background-image6.jpg" %}');
         background-size: cover;
         background-repeat: no-repeat;
-        /* 他の背景スタイルを設定することもできます */
     }
 
     .form-container {
-        background-color: rgba(255, 255, 255, 0.4); /* 背景色の透明度を設定 (0.6 は 60% の透明度) */
+        background-color: rgba(255, 255, 255, 0.4);
         padding: 20px;
     }
 
-    /* ボタンの横幅を広げるスタイル */
     .btn-wide {
         width: 40%;
     }
@@ -34,10 +32,10 @@
         <div class="text-center">
             <form name="form" action="{% url 'dogapp:question6' %}" method="post">
                 {% csrf_token %}
-                <h1>家族との理想の過ごし方は？</h1>
+                <h1>質問6</h1>
                 <br><br>
 
-                <h3></h3>
+                <h3>家族との理想の過ごし方は？</h3>
                 <br><br><br><br>
                 <div class="row">
                     <div class="col-md">

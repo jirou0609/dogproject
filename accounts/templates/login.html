@@ -51,41 +51,41 @@
           User name</label>
 
         <input type="text"
-               name="username"
-               id="id_username"
-               maxlength="150"
-               autocapitalize="none"
-               autocomplete="username"
-               class="form-control"
-               placeholder="ユーザー名"
-               required autofocus>
+              name="username"
+              id="id_username"
+              maxlength="150"
+              autocapitalize="none"
+              autocomplete="username"
+              class="form-control"
+              placeholder="ユーザー名"
+              required autofocus>
         <!-- Passwordのラベル(非表示) -->
         <label for="Password" class="visually-hidden">
           Password</label>
         <!-- passwordの<input>タグを出力-->
         <!-- name属性の値はLoginViewで定義されているフィールド名password -->
         <input type="password"
-               name="password"
-               id="id_password"
-               autocomplete="current-password"
-               class="form-control"
-               placeholder="パスワード"
-               required autofocus>
-        
+              name="password"
+              id="id_password"
+              autocomplete="current-password"
+              class="form-control"
+              placeholder="パスワード"
+              required autofocus>
+
         <!-- <button>～</button>を書き換えてログインボタンを配置 -->
             <input class="w-100 btn btn-lg btn-primary"
-                   type="submit"
-                   value="ログイン">
-        
+                  type="submit"
+                  value="ログイン">
+
         <!-- パスワードリセットページのリンクテキスト -->
         <br><br>
         <p><a href="{% url 'password_reset' %}">パスワードを忘れましたか?</a><p>
         <!-- ログイン直後のリダイレクト先(トップページ)のURLパターンを設定 -->
         <input type="hidden"
-               name="next"
-               value="{% url 'dogapp:index' %}">
+              name="next"
+              value="{% url 'dogapp:index' %}">
       </form>
-    </main>   
+    </main>
   </body>
   {% endblock %}
 </html>

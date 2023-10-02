@@ -199,7 +199,7 @@ def count_results(request):
     return render(request, 'ranking.html', {'dog_info_list': dog_info_list})
 
 
-#コメントを消す
+#投稿コメントを消す
 class CommentDeleteView(DeleteView):
     template_name = 'comment_delete.html'
     model = Comment
@@ -209,12 +209,15 @@ class CommentDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-#フォームから入力を受け取って保存/コメントの一覧表示
-from django.shortcuts import redirect
-from django.utils import timezone
-from django.views.generic import ListView
-from .models import Comment
-from .forms import CommentForm  # フォームのインポートを適切なものに変更
+#投稿コメントを消す
+class ReplyDeleteView(DeleteView):
+    template_name = 'reply_delete.html'
+    model = ReplyComment
+    success_url = reverse_lazy('dogapp:comment')
+
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
 
 class CommentListView(ListView):
     model = Comment
@@ -244,7 +247,7 @@ class CommentListView(ListView):
             return self.render_to_response(context)
 
 
-
+#返信コメントのフォームと保存
 def reply_to_comment(request):
     if request.method == 'POST':
         form = ReplyCommentForm(request.POST)
@@ -258,7 +261,6 @@ def reply_to_comment(request):
                 parent_comment = None
 
             if parent_comment:
-                # 返信コメントを保存
                 reply_comment = ReplyComment(
                     parent_comment=parent_comment,
                     user=request.user,
