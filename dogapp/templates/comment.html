@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}comment{% endblock %}
+
 <!-- Header -->
 {% block header %}
 <header class="bg-warning py-0">
@@ -50,6 +51,7 @@
         });
     });
 </script>
+
 <style>
     .reply-buttons {
         display: flex;
@@ -60,13 +62,18 @@
     .close-reply-form {
         margin-right: 20px; /* ボタン間の右側のマージンを調整 */
     }
+
+    /* 返信コメントの左側に空白のボックスを追加 */
+    .reply-box-left {
+        margin-left: 20px;
+        border-left: 4px solid #ccc; /* 左側のボーダーを追加 */
+        padding-left: 10px; /* 左側の余白を調整 */
+    }
 </style>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <!-- コンテンツを中央に配置 -->
         <div class="col-lg-8">
-            <!-- コメント投稿フォーム -->
             <h3 class="display-7 fw-bolder text-dark mb-2 text-center">コメントを投稿する</h3>
             <hr>
             <form method="post" class="mb-4">
@@ -104,12 +111,12 @@
                     </div>
                     <div class="comment-text">
                         <p class="comment-text-large">
-                        {{ comment.comment_text }}
+                            {{ comment.comment_text }}
                         </p>
                         {% if request.user == comment.user %}
                         <form method='POST'>
                             <div class="d-flex justify-content-end">
-                                <a href="{% url 'dogapp:comment_delete' comment.pk %}" class="btn btn-primary my-2">削除する</a>
+                                <a href="{% url 'dogapp:comment_delete' comment.pk %}" class="btn btn-danger my-2">削除する</a>
                             </div>
                         </form>
                         {% else %}
@@ -130,7 +137,24 @@
                             </form>
                         </div>
                         {% endif %}
-                        <hr>
+                        <hr style="border-top: 4px solid #000;">
+                        <!-- 返信コメント -->
+                        {% for reply in reply_comments %}
+                        {% if reply.parent_comment == comment %}
+                        <div class="reply-box reply-box-left">
+                            <div class="reply-header">
+                                <span class="reply-user">{{ reply.user }}</span>
+                                <span class="reply-date">{{ reply.post_date }}</span>
+                            </div>
+                            <div class="reply-text">
+                                <p class="reply-text-large">
+                                    {{ reply.comment_text }}
+                                </p>
+                            </div>
+                        </div>
+                        <br><hr>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 {% empty %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -210,6 +210,12 @@ class CommentDeleteView(DeleteView):
 
 
 #フォームから入力を受け取って保存/コメントの一覧表示
+from django.shortcuts import redirect
+from django.utils import timezone
+from django.views.generic import ListView
+from .models import Comment
+from .forms import CommentForm  # フォームのインポートを適切なものに変更
+
 class CommentListView(ListView):
     model = Comment
     template_name = 'comment.html'
@@ -221,6 +227,7 @@ class CommentListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class()
+        context["reply_comments"] = ReplyComment.objects.all()  # ReplyComment モデルの取得を追加
         return context
 
     def post(self, request, *args, **kwargs):
@@ -238,77 +245,13 @@ class CommentListView(ListView):
 
 
 
-# class ReplyCommentView(ListView):
-#     model = ReplyComment
-#     template_name = 'replyform.html'
-#     context_object_name = 'reply'
-#     ordering = ['-post_date']
-#     form_class = ReplyCommentForm
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['form'] = self.form_class()
-#         return context
-
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             parent_comment_id = request.POST.get('parent_comment_id')  # 元コメントのIDを取得
-#             parent_comment = Comment.objects.get(id=parent_comment_id)  # 元コメントを取得
-#             postdata = form.save(commit=False)
-#             postdata.user = request.user
-#             postdata.post_date = timezone.now()
-#             postdata.parent_comment = parent_comment  # 元コメントを設定
-#             postdata.save()
-#             return redirect('dogapp:comment')
-#         else:
-#             context = self.get_context_data()
-#             context['form'] = form
-#             return self.render_to_response(context)
-
-
-#コメント詳細ページ
-class CommentDetailView(DetailView):
-    template_name = 'comment_detail.html'
-    model = Comment
-
-
-# def pcpk_session(request):
-#     if request.method == 'POST':
-#         pcpk = request.POST.get('pcpk')
-#         request.session['pcpk'] = pcpk
-#         parent_comment = create_answer_list_from_session(request)
-#         print(f'parent_commentは{parent_comment}です')
-#         return render(request, 'replyform.html')
-#     return render(request, 'replyform.html')
-
-
-@method_decorator(login_required, name='dispatch')
-class ReplyCommentView(CreateView):
-    form_class = ReplyCommentForm
-    template_name = 'replyform.html'
-    model = ReplyComment
-    success_url = reverse_lazy('dogapp:comment')
-
-    def form_valid(self, form):
-        comment_pk = self.request.POST.get('pcpk')  # request.POST.getで{{ comment.pk }}を取得
-
-        # ReplyCommentモデルにデータを保存
-        postdata = form.save(commit=False)
-        postdata.parent_comment = comment_pk
-        postdata.user = self.request.user
-        postdata.post_date = timezone.now()
-        postdata.save()
-        return super().form_valid(form)
-
-
 def reply_to_comment(request):
     if request.method == 'POST':
         form = ReplyCommentForm(request.POST)
         if form.is_valid():
             comment_text = form.cleaned_data['comment_text']
             parent_comment_id = form.cleaned_data['parent_comment_id']
-            
+
             try:
                 parent_comment = Comment.objects.get(pk=parent_comment_id)
             except Comment.DoesNotExist:
@@ -323,5 +266,4 @@ def reply_to_comment(request):
                 )
                 reply_comment.save()
 
-    # リダイレクトまたは適切な処理を行う
     return redirect('dogapp:comment')
