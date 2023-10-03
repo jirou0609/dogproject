@@ -157,6 +157,7 @@ def create_answer(request):
             return render(request, 'index.html')
 
 
+#Dogsモデルからpkがdog_idと一致するオブジェクトを取得
 def result(request, dog_id):
     dog = get_object_or_404(Dogs, pk=dog_id)
     return render(request, 'result.html', {'dog': dog})

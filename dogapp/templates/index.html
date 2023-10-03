@@ -12,7 +12,7 @@
                                 <p class="lead fw-normal text-black-50 mb-4">あなたにぴったりのパートナー見つけませんか？</p>
                                 {% if user.is_authenticated %}
                                 <div class="d-grid gap-3 d-sm-flex justify-content-center">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'dogapp:question1' %}">診断する</a>
+                                    <a class="btn btn-success btn-lg px-4 me-sm-3" href="{% url 'dogapp:question1' %}">診断する</a>
                                     <a class="btn btn-outline-dark btn-lg px-4" href="{% url 'accounts:logout' %}">ログアウト</a>
                                 </div>
                                 {% else %}
